@@ -1,6 +1,6 @@
 # HyperOS Bitwarden Credential Fix
 
-A small KernelSU module for Chinese HyperOS builds that leave third-party credential providers out of Android's secure settings. It sets Bitwarden as the primary Credential Manager provider, adds it to the enabled-provider list without removing existing providers, and selects Bitwarden for password autofill.
+A small KernelSU module for Chinese HyperOS builds that leave third-party credential providers out of Android's secure settings. It keeps Bitwarden as the primary Credential Manager provider, adds it to the enabled-provider list without removing existing providers, and selects Bitwarden for password autofill.
 
 ## What it sets
 
@@ -17,7 +17,9 @@ com.x8bit.bitwarden/com.x8bit.bitwarden.Autofill.CredentialProviderService
 com.x8bit.bitwarden/com.x8bit.bitwarden.Autofill.AutofillService
 ```
 
-The app must be installed and its APK must declare these services. The module registers the components in Android's settings; it cannot add missing services to the Bitwarden APK.
+Bitwarden's APK must declare these services. The module enables them in Android's settings; it cannot add a missing service to the APK.
+
+While enabled, the module checks these settings every 10 seconds and restores Bitwarden if HyperOS clears or changes them. Existing enabled providers are preserved. It stops checking when the module is disabled or removed.
 
 ## Install
 
@@ -25,7 +27,7 @@ The app must be installed and its APK must declare these services. The module re
 2. In KernelSU, install [`hyperos-bitwarden-passkey-fix-ksu.zip`](hyperos-bitwarden-passkey-fix-ksu.zip).
 3. Reboot.
 
-The module reapplies the settings at boot. It does not use Zygisk, LSPosed, or runtime code hooks.
+The module starts checking after boot completes. It does not use Zygisk, LSPosed, or runtime code hooks.
 
 ## Verify
 
@@ -37,7 +39,7 @@ settings get secure credential_service_primary
 settings get secure autofill_service
 ```
 
-The first value should include Bitwarden and retain prior enabled providers. The other two should be Bitwarden's components listed above.
+The first value should include Bitwarden and retain other enabled providers. The other two should be Bitwarden's components listed above. If HyperOS resets these settings while the module is enabled, they should be restored within about 10 seconds.
 
 ## Scope
 
@@ -50,4 +52,4 @@ Related projects:
 
 ## Device notes
 
-Developed for CN HyperOS, including Dragon-X on the POCO X7 Pro (HyperOS 3 / Android 16). The boot script was checked with mocked Android settings on Windows; verify the three settings on your device after installing.
+Developed for CN HyperOS, including Dragon-X on the POCO X7 Pro (HyperOS 3 / Android 16). Behavior may vary by ROM build; verify the three settings on your device after installing.
