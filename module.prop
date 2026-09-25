@@ -1,0 +1,6 @@
+id=hyperos_passkey_fix
+name=HyperOS Bitwarden Passkey Fix
+version=1.0.0
+versionCode=1
+author=Codex
+description=Sets Bitwarden as the primary credential provider and autofill service on CN HyperOS.
