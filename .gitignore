@@ -1,3 +1,5 @@
 .upstream-*/
 hyperos-passkey-fix-ksu.zip
 node_modules/
+build/
+hyperos-bitwarden-passkey-fix-ksu.zip
