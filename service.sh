@@ -36,9 +36,14 @@ ensure_settings() {
     [ "$changed" = 0 ] || log -t HyperOSPasskeyFix "Restored Bitwarden credential provider and autofill settings"
 }
 
+bridge_started=0
 while [ -d "$MODDIR" ] && [ ! -e "$MODDIR/disable" ]; do
     if [ "$(getprop sys.boot_completed)" = 1 ]; then
         ensure_settings
+        if [ "$bridge_started" = 0 ]; then
+            bridge_started=1
+            sh "$MODDIR/fido-watch.sh" &
+        fi
     fi
     # ponytail: small sleep-based check avoids an Android helper or brittle settings-file watcher.
     sleep 10
