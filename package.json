@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "description": "Build dependencies for hook.js (the com.fido.asm QR sign-in bridge)",
+  "devDependencies": {
+    "frida-compile": "19.1.0",
+    "frida-java-bridge": "7.0.13"
+  },
+  "allowScripts": {
+    "frida@17.22.1": true
+  }
+}
